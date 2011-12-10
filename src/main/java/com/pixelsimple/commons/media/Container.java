@@ -9,5 +9,11 @@ package com.pixelsimple.commons.media;
  * Dec 9, 2011
  */
 public interface Container {
+	
+	public static final String MEDIA_TYPE_VIDEO = "VIDEO";
+	public static final String MEDIA_TYPE_AUDIO = "AUDIO";
+	public static final String MEDIA_TYPE_PHOTO = "PHOTO";
+	
+	String getMediaType();
 
 }

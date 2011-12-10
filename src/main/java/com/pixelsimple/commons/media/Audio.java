@@ -10,4 +10,12 @@ package com.pixelsimple.commons.media;
  */
 public class Audio implements Container {
 
+	/* (non-Javadoc)
+	 * @see com.pixelsimple.commons.media.Container#getMediaType()
+	 */
+	@Override
+	public String getMediaType() {
+		return Container.MEDIA_TYPE_AUDIO;
+	}
+
 }
