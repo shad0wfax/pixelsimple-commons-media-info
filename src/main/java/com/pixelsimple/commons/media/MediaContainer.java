@@ -10,6 +10,7 @@ import com.pixelsimple.commons.command.CommandRequest;
 import com.pixelsimple.commons.command.CommandResponse;
 import com.pixelsimple.commons.command.CommandRunner;
 import com.pixelsimple.commons.command.CommandRunnerFactory;
+import com.pixelsimple.commons.media.parser.FfmpegOutputParser;
 
 /**
  *
@@ -31,6 +32,9 @@ public class MediaContainer {
 		runner.runCommand(commandRequest, commandResponse);
 		
 		LOG.debug("readContainerInfo::commandResponse::{}", commandResponse);
+		
+		FfmpegOutputParser parser = new FfmpegOutputParser();
+		Container container = parser.parseMediaInfo(commandResponse);
 	}
 	
 	/**
