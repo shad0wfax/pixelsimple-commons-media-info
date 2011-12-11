@@ -24,6 +24,8 @@ public class FfmpegOutputParser implements Parser {
 	// TODO: Externalize these patterns! 
 	private static final Pattern BITRATE_PATTERN = Pattern.compile(".?bitrate:\\s([0-9]*)\\skb/s", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
 	private static final Pattern DURATION_PATTERN = Pattern.compile(".?Duration:[\\s]*([^,]*),", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
+	private static final Pattern STREAM_COUNT_PATTERN = Pattern.compile(".?Stream(.#[0-9].[0-9]:[^:]+)", Pattern.CASE_INSENSITIVE);
+	//..?Stream(.#[0-9].[0-9]:[^:]+)
 
 
 	/* (non-Javadoc)
@@ -52,6 +54,7 @@ public class FfmpegOutputParser implements Parser {
 		//String text = "Duration: 00:05:25.00, start: 0.000000, bitrate: 554 kb/s";
 		String bitRate = null;
 		String duration = null;
+		int streamCount = 0;
 		
 		Matcher m = BITRATE_PATTERN.matcher(output);
 		
@@ -68,6 +71,20 @@ public class FfmpegOutputParser implements Parser {
 			duration = m.group(1);
 		}		
 		LOG.debug("createContainer::duration extracted::{}", duration);
+		
+		m = STREAM_COUNT_PATTERN.matcher(output);
+//		
+//		if(m.find())
+//		{
+//			streamCount = m.groupCount();
+//			LOG.debug("createContainer::number of streams found::{}", m.group(1));
+//		}		
+//		LOG.debug("createContainer::number of streams found::{}", streamCount);
+		
+		while (m.find()) {
+			LOG.debug("createContainer::number of streams found::{}", m.group());
+		}
+		
 	}
 
 
