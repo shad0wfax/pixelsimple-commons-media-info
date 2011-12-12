@@ -3,6 +3,8 @@
  */
 package com.pixelsimple.commons.media.parser.ffmpeg;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pixelsimple.commons.command.CommandResponse;
+import com.pixelsimple.commons.media.Audio;
 import com.pixelsimple.commons.media.Container;
+import com.pixelsimple.commons.media.MediaContainer;
+import com.pixelsimple.commons.media.Photo;
+import com.pixelsimple.commons.media.Video;
 import com.pixelsimple.commons.media.parser.Parser;
 
 /**
@@ -20,6 +26,8 @@ import com.pixelsimple.commons.media.parser.Parser;
  */
 public class FfmpegOutputParser implements Parser {
 	static final Logger LOG = LoggerFactory.getLogger(FfmpegOutputParser.class);
+	static final String FFMPEG_STREAM_VIDEO = "video:";
+	static final String FFMPEG_STREAM_AUDIO = "audio:";
 	
 	// TODO: Externalize these patterns! 
 	// Find the word bitrate followed by colon(:), followed by a whitespace, followed by any combination [0-9] followed by space and then lastly by kb/s
@@ -41,10 +49,7 @@ public class FfmpegOutputParser implements Parser {
 	 */
 	@Override
 	public Container parseMediaInfo(CommandResponse commandResponse) {
-		this.createContainer(commandResponse);
-		
-		// TODO Auto-generated method stub
-		return null;
+		return this.createMediaContainer(commandResponse);
 	}
 
 	/* (non-Javadoc)
@@ -56,13 +61,13 @@ public class FfmpegOutputParser implements Parser {
 		return null;
 	}
 	
-	private void createContainer(CommandResponse commandResponse) {
+	private Container createMediaContainer(CommandResponse commandResponse) {
 		String output = commandResponse.getSuccessResponse().toString();
+		MediaContainer container = this.createContainerType(output); 
 		
 		//String text = "Duration: 00:05:25.00, start: 0.000000, bitrate: 554 kb/s";
 		String bitRate = null;
 		String duration = null;
-		int streamCount = 0;
 		
 		Matcher m = BITRATE_PATTERN.matcher(output);
 		
@@ -71,6 +76,7 @@ public class FfmpegOutputParser implements Parser {
 			bitRate = m.group(1);
 		}		
 		LOG.debug("createContainer::bitrate extracted::{}", bitRate);
+		container.setBitRate(bitRate);
 		
 		m = DURATION_PATTERN.matcher(output);
 		
@@ -79,13 +85,50 @@ public class FfmpegOutputParser implements Parser {
 			duration = m.group(1);
 		}		
 		LOG.debug("createContainer::duration extracted::{}", duration);
+		container.setDuration(duration);
 		
-		m = STREAM_COUNT_PATTERN.matcher(output);
+		return container;
+		
+	}
+	
+	// TODO: Refine this algo
+	private MediaContainer createContainerType(String output) {
+		int streamCount = 0;
+		MediaContainer container = null;
+		Map<String, String> streams = new HashMap<String, String>(4);
+		Matcher m = STREAM_COUNT_PATTERN.matcher(output);
+		
 		while (m.find()) {
 			++streamCount;
-			LOG.debug("createContainer::streams found::{}", m.group());
+			String stream = m.group();
+			
+			if (stream.toLowerCase().contains(FFMPEG_STREAM_VIDEO)) {
+				streams.put(Container.MEDIA_TYPE_VIDEO, stream);
+			} else if (stream.toLowerCase().contains(FFMPEG_STREAM_AUDIO)) {
+				streams.put(Container.MEDIA_TYPE_AUDIO, stream);
+			}
+			LOG.debug("createContainer::streams found::{}", stream);
 		}
 		LOG.debug("createContainer::number of streams found::{}", streamCount);
+		
+		// Junk logic maybe. Proof check and see how best to make this better.
+		if (streams.size() == 2) {
+			container = new Video();
+		} else if (streams.size() == 1) {
+			
+			if (streams.containsKey(Container.MEDIA_TYPE_AUDIO)) {
+				container = new Audio();
+			} else if (streams.containsKey(Container.MEDIA_TYPE_VIDEO)) {
+				// Is it photo or video? Need better algo
+				container = new Photo();
+			}
+		} else {
+			// TODO: what?? - default to video for now
+			container = new Video();
+		}
+		container.addStreams(streams);
+		
+		return container;
 	}
 
 

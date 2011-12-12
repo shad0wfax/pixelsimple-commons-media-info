@@ -3,6 +3,8 @@
  */
 package com.pixelsimple.commons.media;
 
+import java.util.Map;
+
 /**
  *
  * @author Akshay Sharma
@@ -15,5 +17,13 @@ public interface Container {
 	public static final String MEDIA_TYPE_PHOTO = "PHOTO";
 	
 	String getMediaType();
+	
+	Map<String, String> getStreams();
+	
+	int getStreamCount();
+	
+	String getBitRate();
+	
+	String getDuration();
 
 }

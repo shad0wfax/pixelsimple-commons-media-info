@@ -3,12 +3,14 @@
  */
 package com.pixelsimple.commons.media;
 
+import java.util.Map;
+
 /**
  *
  * @author Akshay Sharma
  * Dec 10, 2011
  */
-public class Photo implements Container {
+public class Photo extends MediaContainer {
 
 	/* (non-Javadoc)
 	 * @see com.pixelsimple.commons.media.Container#getMediaType()

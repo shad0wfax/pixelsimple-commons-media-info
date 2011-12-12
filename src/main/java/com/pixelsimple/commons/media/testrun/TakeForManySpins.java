@@ -11,7 +11,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pixelsimple.commons.media.MediaContainer;
+import com.pixelsimple.commons.media.MediaInspector;
 
 /**
  *
@@ -74,7 +74,7 @@ public class TakeForManySpins implements Runnable {
 		LOG.debug("transcode::final params::{}", params);
 
 		String filePathWithFileName = params.get("filePathWithFileName");
-		MediaContainer.readContainerInfo(filePathWithFileName);
+		MediaInspector.readContainerInfo(filePathWithFileName);
 	}
 
 	/* (non-Javadoc)
