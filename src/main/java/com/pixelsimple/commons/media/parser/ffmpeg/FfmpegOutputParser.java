@@ -22,10 +22,18 @@ public class FfmpegOutputParser implements Parser {
 	static final Logger LOG = LoggerFactory.getLogger(FfmpegOutputParser.class);
 	
 	// TODO: Externalize these patterns! 
+	// Find the word bitrate followed by colon(:), followed by a whitespace, followed by any combination [0-9] followed by space and then lastly by kb/s
 	private static final Pattern BITRATE_PATTERN = Pattern.compile(".?bitrate:\\s([0-9]*)\\skb/s", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
+	
+	// Find the word Duration followed by :, followed by any number of whitespaces, followed by any number of characters that is not a comma(,), followed by a comma
 	private static final Pattern DURATION_PATTERN = Pattern.compile(".?Duration:[\\s]*([^,]*),", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
-	private static final Pattern STREAM_COUNT_PATTERN = Pattern.compile(".?Stream(.#[0-9].[0-9]:[^:]+)", Pattern.CASE_INSENSITIVE);
+
+	// Find the word Stream followed by :, followed by any number of any characters that is not a #, followed by a #, followed by [09].[0-9], 
+	// followed by any number of any characters that is not a colon, followed by a colon. followed again by any number of any characters that is not a colon
+	private static final Pattern STREAM_COUNT_PATTERN = Pattern.compile(".?Stream[^#]*#[0-9].[0-9][^:]*:[^:]*[^$]*?", Pattern.CASE_INSENSITIVE);
 	//..?Stream(.#[0-9].[0-9]:[^:]+)
+	// .?Stream(.#[0-9].[0-9].*[:])
+	// .?Stream(.#[0-9].[0-9][.*]*?)
 
 
 	/* (non-Javadoc)
@@ -73,18 +81,11 @@ public class FfmpegOutputParser implements Parser {
 		LOG.debug("createContainer::duration extracted::{}", duration);
 		
 		m = STREAM_COUNT_PATTERN.matcher(output);
-//		
-//		if(m.find())
-//		{
-//			streamCount = m.groupCount();
-//			LOG.debug("createContainer::number of streams found::{}", m.group(1));
-//		}		
-//		LOG.debug("createContainer::number of streams found::{}", streamCount);
-		
 		while (m.find()) {
-			LOG.debug("createContainer::number of streams found::{}", m.group());
+			++streamCount;
+			LOG.debug("createContainer::streams found::{}", m.group());
 		}
-		
+		LOG.debug("createContainer::number of streams found::{}", streamCount);
 	}
 
 
