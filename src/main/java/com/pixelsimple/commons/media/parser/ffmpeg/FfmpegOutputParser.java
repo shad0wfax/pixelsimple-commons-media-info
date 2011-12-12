@@ -30,7 +30,7 @@ public class FfmpegOutputParser implements Parser {
 
 	// Find the word Stream followed by :, followed by any number of any characters that is not a #, followed by a #, followed by [09].[0-9], 
 	// followed by any number of any characters that is not a colon, followed by a colon. followed again by any number of any characters that is not a colon
-	private static final Pattern STREAM_COUNT_PATTERN = Pattern.compile(".?Stream[^#]*#[0-9].[0-9][^:]*:[^:]*", Pattern.CASE_INSENSITIVE);
+	private static final Pattern STREAM_COUNT_PATTERN = Pattern.compile(".?Stream[^#]*#[0-9].[0-9][^:]*:[^:]*[^\n]*", Pattern.CASE_INSENSITIVE|Pattern.DOTALL);
 	//..?Stream(.#[0-9].[0-9]:[^:]+)
 	// .?Stream(.#[0-9].[0-9].*[:])
 	// .?Stream(.#[0-9].[0-9][.*]*?)
