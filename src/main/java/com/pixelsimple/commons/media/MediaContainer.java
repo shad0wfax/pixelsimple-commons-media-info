@@ -11,9 +11,12 @@ import java.util.Map;
  * Dec 13, 2011
  */
 public abstract class MediaContainer implements Container {
-	private Map<String, String> streams;
+	
+	private Map<Container.StreamType, String> streams;
 	private String bitRate;
 	private String duration;
+	private String fileSize;
+	private String metaData;
 
 	/**
 	 * 
@@ -23,7 +26,7 @@ public abstract class MediaContainer implements Container {
 	}
 
 	
-	public Container addStreams(Map<String, String> streams) {
+	public Container addStreams(Map<Container.StreamType, String> streams) {
 		this.streams = streams;
 		return this;
 	}
@@ -32,7 +35,7 @@ public abstract class MediaContainer implements Container {
 	 * @see com.pixelsimple.commons.media.Container#getStreams()
 	 */
 	@Override
-	public Map<String, String> getStreams() {
+	public Map<Container.StreamType, String> getStreams() {
 		return this.streams;
 	}
 
@@ -50,7 +53,7 @@ public abstract class MediaContainer implements Container {
 	/**
 	 * @param bitRate
 	 */
-	public Container setBitRate(String bitRate) {
+	public MediaContainer setBitRate(String bitRate) {
 		this.bitRate = bitRate;
 		return this;
 	}
@@ -59,7 +62,7 @@ public abstract class MediaContainer implements Container {
 	/**
 	 * @param duration
 	 */
-	public Container setDuration(String duration) {
+	public MediaContainer setDuration(String duration) {
 		this.duration = duration;
 		return this;
 	}
@@ -68,7 +71,7 @@ public abstract class MediaContainer implements Container {
 	 * @see com.pixelsimple.commons.media.Container#getBitRate()
 	 */
 	@Override
-	public String getBitRate() {
+	public String getBitRateKbps() {
 		return this.bitRate;
 	}
 
@@ -80,6 +83,38 @@ public abstract class MediaContainer implements Container {
 		return this.duration;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.pixelsimple.commons.media.Container#getFileSize()
+	 */
+	@Override
+	public String getFileSize() {
+		return this.fileSize;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pixelsimple.commons.media.Container#getMetaData()
+	 */
+	@Override
+	public String getMetaData() {
+		return this.metaData;
+	}
+	
+	/**
+	 * @param fileSize the fileSize to set
+	 */
+	public MediaContainer setFileSize(String fileSize) {
+		this.fileSize = fileSize;
+		return this;
+	}
+
+	/**
+	 * @param metaData the metaData to set
+	 */
+	public MediaContainer setMetaData(String metaData) {
+		this.metaData = metaData;
+		return this;
+	}
+
 	public String toString() {
 		return this.getMediaType() + "::" + this.bitRate + " kb/s::" + this.duration + "::" + this.streams;
 	}

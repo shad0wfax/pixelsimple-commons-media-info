@@ -16,8 +16,8 @@ public class Video extends MediaContainer {
 	 * @see com.pixelsimple.commons.media.Container#getMediaType()
 	 */
 	@Override
-	public String getMediaType() {
-		return Container.MEDIA_TYPE_VIDEO;
+	public MediaType getMediaType() {
+		return Container.MediaType.VIDEO;
 	}
 
 }

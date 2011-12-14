@@ -16,8 +16,8 @@ public class Photo extends MediaContainer {
 	 * @see com.pixelsimple.commons.media.Container#getMediaType()
 	 */
 	@Override
-	public String getMediaType() {
-		return Container.MEDIA_TYPE_PHOTO;
+	public MediaType getMediaType() {
+		return Container.MediaType.PHOTO;
 	}
 
 }

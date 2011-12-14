@@ -70,32 +70,30 @@ public class FfmpegOutputParser implements Parser {
 		String duration = null;
 		
 		Matcher m = BITRATE_PATTERN.matcher(output);
-		
 		if(m.find())
 		{
 			bitRate = m.group(1);
 		}		
 		LOG.debug("createContainer::bitrate extracted::{}", bitRate);
-		container.setBitRate(bitRate);
 		
 		m = DURATION_PATTERN.matcher(output);
-		
 		if(m.find())
 		{
 			duration = m.group(1);
 		}		
 		LOG.debug("createContainer::duration extracted::{}", duration);
-		container.setDuration(duration);
+
+		// Set the container data
+		container.setBitRate(bitRate).setDuration(duration);
 		
 		return container;
-		
 	}
 	
 	// TODO: Refine this algo
 	private MediaContainer createContainerType(String output) {
 		int streamCount = 0;
 		MediaContainer container = null;
-		Map<String, String> streams = new HashMap<String, String>(4);
+		Map<Container.StreamType, String> streams = new HashMap<Container.StreamType, String>(4);
 		Matcher m = STREAM_COUNT_PATTERN.matcher(output);
 		
 		while (m.find()) {
@@ -103,9 +101,9 @@ public class FfmpegOutputParser implements Parser {
 			String stream = m.group();
 			
 			if (stream.toLowerCase().contains(FFMPEG_STREAM_VIDEO)) {
-				streams.put(Container.MEDIA_TYPE_VIDEO, stream);
+				streams.put(Container.StreamType.VIDEO, stream);
 			} else if (stream.toLowerCase().contains(FFMPEG_STREAM_AUDIO)) {
-				streams.put(Container.MEDIA_TYPE_AUDIO, stream);
+				streams.put(Container.StreamType.AUDIO, stream);
 			}
 			LOG.debug("createContainer::streams found::{}", stream);
 		}
@@ -116,9 +114,9 @@ public class FfmpegOutputParser implements Parser {
 			container = new Video();
 		} else if (streams.size() == 1) {
 			
-			if (streams.containsKey(Container.MEDIA_TYPE_AUDIO)) {
+			if (streams.containsKey(Container.StreamType.AUDIO)) {
 				container = new Audio();
-			} else if (streams.containsKey(Container.MEDIA_TYPE_VIDEO)) {
+			} else if (streams.containsKey(Container.StreamType.VIDEO)) {
 				// Is it photo or video? Need better algo
 				container = new Photo();
 			}

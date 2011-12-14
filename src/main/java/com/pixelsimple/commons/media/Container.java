@@ -6,24 +6,28 @@ package com.pixelsimple.commons.media;
 import java.util.Map;
 
 /**
- *
+ * TODO: Figure out the return types etc eventually 
+ * 
  * @author Akshay Sharma
  * Dec 9, 2011
  */
 public interface Container {
 	
-	public static final String MEDIA_TYPE_VIDEO = "VIDEO";
-	public static final String MEDIA_TYPE_AUDIO = "AUDIO";
-	public static final String MEDIA_TYPE_PHOTO = "PHOTO";
+	public static enum MediaType {VIDEO, AUDIO, PHOTO};
+	public static enum StreamType {VIDEO, AUDIO};
 	
-	String getMediaType();
+	MediaType getMediaType();
 	
-	Map<String, String> getStreams();
+	Map<Container.StreamType, String> getStreams();
 	
 	int getStreamCount();
 	
-	String getBitRate();
+	String getBitRateKbps();
 	
 	String getDuration();
 
+	String getFileSize();
+
+	String getMetaData();
+	
 }

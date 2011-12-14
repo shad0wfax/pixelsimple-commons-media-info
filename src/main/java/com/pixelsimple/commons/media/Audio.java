@@ -16,8 +16,7 @@ public class Audio extends MediaContainer {
 	 * @see com.pixelsimple.commons.media.Container#getMediaType()
 	 */
 	@Override
-	public String getMediaType() {
-		return Container.MEDIA_TYPE_AUDIO;
+	public MediaType getMediaType() {
+		return Container.MediaType.AUDIO;
 	}
-
 }
