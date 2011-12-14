@@ -62,7 +62,7 @@ public class FfmpegOutputParser implements Parser {
 	}
 	
 	private Container createMediaContainer(CommandResponse commandResponse) {
-		String output = commandResponse.getSuccessResponse().toString();
+		String output = commandResponse.getSuccessResponseOutputStream().toString();
 		MediaContainer container = this.createContainerType(output); 
 		
 		//String text = "Duration: 00:05:25.00, start: 0.000000, bitrate: 554 kb/s";
