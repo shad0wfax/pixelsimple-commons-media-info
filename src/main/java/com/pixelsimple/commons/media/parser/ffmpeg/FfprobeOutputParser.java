@@ -31,8 +31,8 @@ public class FfprobeOutputParser implements Parser {
 	
 	private static final String FFPROBE_OUTPUT_STREAM_START_TAG = "[STREAM]";
 	private static final String FFPROBE_OUTPUT_STREAM_END_TAG = "[/STREAM]";
-	private static final String FFPROBE_OUTPUT_FORMAT_START_TAG = "[STREAM]";
-	private static final String FFPROBE_OUTPUT_FORMAT_END_TAG = "[/STREAM]";
+	private static final String FFPROBE_OUTPUT_FORMAT_START_TAG = "[FORMAT]";
+	private static final String FFPROBE_OUTPUT_FORMAT_END_TAG = "[/FORMAT]";
 	private static final String NEW_LINE_CHARACTER = System.getProperty("line.separator");
 
 	/* (non-Javadoc)

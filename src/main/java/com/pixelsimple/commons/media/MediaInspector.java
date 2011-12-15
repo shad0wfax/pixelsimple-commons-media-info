@@ -37,7 +37,7 @@ public class MediaInspector {
 		Parser parser = ParserFactory.createParserForCommandRequest(commandRequest);
 		Container container = parser.parseMediaInfo(commandResponse);
 
-		//LOG.debug("readContainerInfo::created container::{}", container);
+		LOG.debug("readContainerInfo::file size and bitrate are ::{}, and {} bits per second", container.getFileSize(), container.getBitRateBps());
 	}
 	
 	/**
