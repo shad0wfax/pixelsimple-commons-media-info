@@ -37,7 +37,7 @@ public class MediaInspector {
 		Parser parser = ParserFactory.createParserForCommandRequest(commandRequest);
 		Container container = parser.parseMediaInfo(commandResponse);
 
-		LOG.debug("readContainerInfo::created container::{}", container);
+		//LOG.debug("readContainerInfo::created container::{}", container);
 	}
 	
 	/**
@@ -46,11 +46,9 @@ public class MediaInspector {
 	 */
 	private static CommandRequest buildCommand(String filePathWithFileName) {
 		String ffmpegPath = "Z:/VmShare/Win7x64/Technology/ffmpeg/release_0.8_love/ffmpeg-git-78accb8-win32-static/bin/";
-		
 		String command = ffmpegPath + "ffprobe -i " + filePathWithFileName + " -show_format -show_streams -sexagesimal ";
 		
 		LOG.debug("buildCommand::built command::{}", command);
-		
 		return new CommandRequest().addCommand(command, 0);
 	}
 

@@ -49,7 +49,8 @@ public class FfmpegOutputParser implements Parser {
 	 */
 	@Override
 	public Container parseMediaInfo(CommandResponse commandResponse) {
-		return this.createMediaContainer(commandResponse);
+		return null;
+//		return this.createMediaContainer(commandResponse);
 	}
 
 	/* (non-Javadoc)
@@ -61,73 +62,73 @@ public class FfmpegOutputParser implements Parser {
 		return null;
 	}
 	
-	private Container createMediaContainer(CommandResponse commandResponse) {
-		String output = commandResponse.getSuccessResponseOutputStream().toString();
-		MediaContainer container = this.createContainerType(output); 
-		
-		//String text = "Duration: 00:05:25.00, start: 0.000000, bitrate: 554 kb/s";
-		String bitRate = null;
-		String duration = null;
-		
-		Matcher m = BITRATE_PATTERN.matcher(output);
-		if(m.find())
-		{
-			bitRate = m.group(1);
-		}		
-		LOG.debug("createContainer::bitrate extracted::{}", bitRate);
-		
-		m = DURATION_PATTERN.matcher(output);
-		if(m.find())
-		{
-			duration = m.group(1);
-		}		
-		LOG.debug("createContainer::duration extracted::{}", duration);
-
-		// Set the container data
-		container.setBitRate(bitRate).setDuration(duration);
-		
-		return container;
-	}
-	
-	// TODO: Refine this algo
-	private MediaContainer createContainerType(String output) {
-		int streamCount = 0;
-		MediaContainer container = null;
-		Map<Container.StreamType, String> streams = new HashMap<Container.StreamType, String>(4);
-		Matcher m = STREAM_COUNT_PATTERN.matcher(output);
-		
-		while (m.find()) {
-			++streamCount;
-			String stream = m.group();
-			
-			if (stream.toLowerCase().contains(FFMPEG_STREAM_VIDEO)) {
-				streams.put(Container.StreamType.VIDEO, stream);
-			} else if (stream.toLowerCase().contains(FFMPEG_STREAM_AUDIO)) {
-				streams.put(Container.StreamType.AUDIO, stream);
-			}
-			LOG.debug("createContainer::streams found::{}", stream);
-		}
-		LOG.debug("createContainer::number of streams found::{}", streamCount);
-		
-		// Junk logic maybe. Proof check and see how best to make this better.
-		if (streams.size() == 2) {
-			container = new Video();
-		} else if (streams.size() == 1) {
-			
-			if (streams.containsKey(Container.StreamType.AUDIO)) {
-				container = new Audio();
-			} else if (streams.containsKey(Container.StreamType.VIDEO)) {
-				// Is it photo or video? Need better algo
-				container = new Photo();
-			}
-		} else {
-			// TODO: what?? - default to video for now
-			container = new Video();
-		}
-		container.addStreams(streams);
-		
-		return container;
-	}
-
+//	private Container createMediaContainer(CommandResponse commandResponse) {
+//		String output = commandResponse.getSuccessResponseOutputStream().toString();
+//		MediaContainer container = this.createContainerType(output); 
+//		
+//		//String text = "Duration: 00:05:25.00, start: 0.000000, bitrate: 554 kb/s";
+//		String bitRate = null;
+//		String duration = null;
+//		
+//		Matcher m = BITRATE_PATTERN.matcher(output);
+//		if(m.find())
+//		{
+//			bitRate = m.group(1);
+//		}		
+//		LOG.debug("createContainer::bitrate extracted::{}", bitRate);
+//		
+//		m = DURATION_PATTERN.matcher(output);
+//		if(m.find())
+//		{
+//			duration = m.group(1);
+//		}		
+//		LOG.debug("createContainer::duration extracted::{}", duration);
+//
+//		// Set the container data
+//		container.setBitRate(bitRate).setDuration(duration);
+//		
+//		return container;
+//	}
+//	
+//	// TODO: Refine this algo
+//	private MediaContainer createContainerType(String output) {
+//		int streamCount = 0;
+//		MediaContainer container = null;
+//		Map<Container.StreamType, String> streams = new HashMap<Container.StreamType, String>(4);
+//		Matcher m = STREAM_COUNT_PATTERN.matcher(output);
+//		
+//		while (m.find()) {
+//			++streamCount;
+//			String stream = m.group();
+//			
+//			if (stream.toLowerCase().contains(FFMPEG_STREAM_VIDEO)) {
+//				streams.put(Container.StreamType.VIDEO, stream);
+//			} else if (stream.toLowerCase().contains(FFMPEG_STREAM_AUDIO)) {
+//				streams.put(Container.StreamType.AUDIO, stream);
+//			}
+//			LOG.debug("createContainer::streams found::{}", stream);
+//		}
+//		LOG.debug("createContainer::number of streams found::{}", streamCount);
+//		
+//		// Junk logic maybe. Proof check and see how best to make this better.
+//		if (streams.size() == 2) {
+//			container = new Video();
+//		} else if (streams.size() == 1) {
+//			
+//			if (streams.containsKey(Container.StreamType.AUDIO)) {
+//				container = new Audio();
+//			} else if (streams.containsKey(Container.StreamType.VIDEO)) {
+//				// Is it photo or video? Need better algo
+//				container = new Photo();
+//			}
+//		} else {
+//			// TODO: what?? - default to video for now
+//			container = new Video();
+//		}
+//		container.addStreams(streams);
+//		
+//		return container;
+//	}
+//
 
 }
