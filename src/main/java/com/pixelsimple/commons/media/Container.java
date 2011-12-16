@@ -26,7 +26,7 @@ public interface Container {
 	
 	MediaType getMediaType();
 	
-	 Map<Container.StreamType, Stream> getStreams();
+	Map<Container.StreamType, Stream> getStreams();
 	
 	int getStreamCount();
 	
@@ -36,6 +36,6 @@ public interface Container {
 
 	String getFileSize();
 
-	String getMetaData();
+	Map<String, String> getMetaData();
 	
 }

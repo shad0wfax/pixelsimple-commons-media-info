@@ -23,7 +23,6 @@ public class MediaInspector {
 	
 	private MediaInspector() {}
 	public static void readContainerInfo(String filePathWithFileName) {
-		
 		CommandRequest commandRequest = buildCommand(filePathWithFileName);
 		// Use the blocking command since this is a fast call
 		CommandRunner runner = CommandRunnerFactory.newBlockingCommandRunner();
@@ -37,7 +36,8 @@ public class MediaInspector {
 		Parser parser = ParserFactory.createParserForCommandRequest(commandRequest);
 		Container container = parser.parseMediaInfo(commandResponse);
 
-		LOG.debug("readContainerInfo::file size and bitrate are ::{}, and {} bits per second", container.getFileSize(), container.getBitRateBps());
+		LOG.debug("readContainerInfo::file size and bitrate are ::{}, and {} bits per second", container.getFileSize(), 
+				container.getBitRateBps());
 	}
 	
 	/**

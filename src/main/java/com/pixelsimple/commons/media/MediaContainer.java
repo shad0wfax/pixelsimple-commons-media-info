@@ -81,7 +81,7 @@ public abstract class MediaContainer implements Container {
 	 * @see com.pixelsimple.commons.media.Container#getMetaData()
 	 */
 	@Override
-	public String getMetaData() {
+	public Map<String, String> getMetaData() {
 		//return this.containerAttributes.get("duration");
 		return null;
 	}
@@ -89,7 +89,7 @@ public abstract class MediaContainer implements Container {
 	/**
 	 * @param containerAttributes the containerAttributes to set
 	 */
-	public void setContainerAttributes(Map<String, String> containerAttributes) {
+	public void addContainerAttributes(Map<String, String> containerAttributes) {
 		this.containerAttributes = containerAttributes;
 	}
 
