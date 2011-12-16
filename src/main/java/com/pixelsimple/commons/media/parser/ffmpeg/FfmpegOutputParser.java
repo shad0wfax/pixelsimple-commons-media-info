@@ -3,20 +3,13 @@
  */
 package com.pixelsimple.commons.media.parser.ffmpeg;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pixelsimple.commons.command.CommandResponse;
-import com.pixelsimple.commons.media.Audio;
 import com.pixelsimple.commons.media.Container;
-import com.pixelsimple.commons.media.MediaContainer;
-import com.pixelsimple.commons.media.Photo;
-import com.pixelsimple.commons.media.Video;
 import com.pixelsimple.commons.media.parser.Parser;
 
 /**

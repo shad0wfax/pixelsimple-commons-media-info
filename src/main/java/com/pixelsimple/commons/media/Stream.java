@@ -14,6 +14,7 @@ import java.util.Map;
 public class Stream {
 	private Map<String, String> streamAttributes;
 	private Container.StreamType streamType;
+	private Map<String, String> metadata;
 	
 	/**
 	 * @return the streamType
@@ -22,19 +23,15 @@ public class Stream {
 		return streamType;
 	}
 
-	/**
-	 * @param streamType the streamType to set
-	 */
-	public void setStreamType(Container.StreamType streamType) {
-		this.streamType = streamType;
-	}
-
 	public Stream(Container.StreamType streamType, Map<String, String> streamAttributes) {
 		this.streamAttributes = streamAttributes;
 	}
 	
+	public void addMetadata(Map<String, String> metadata) {
+		this.metadata = metadata;
+	}
 
 	public String toString() {
-		return this.getStreamType() + "::" + this.streamAttributes; 
+		return this.getStreamType() + "::" + this.streamAttributes + "::\nStream Metadata::" + this.metadata; 
 	}
 }

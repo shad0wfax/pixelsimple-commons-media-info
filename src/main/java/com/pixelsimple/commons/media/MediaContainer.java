@@ -15,6 +15,7 @@ public abstract class MediaContainer implements Container {
 	
 	private Map<Container.StreamType, Stream> streams = new HashMap<Container.StreamType, Stream>(4);
 	private Map<String, String> containerAttributes;
+	private Map<String, String> metadata;
 	
 	/**
 	 * 
@@ -24,12 +25,13 @@ public abstract class MediaContainer implements Container {
 	}
 
 	
-	public Container addStreams(Container.StreamType streamType, Map<String, String> streamAttributes) {
+	public Container addStreams(Container.StreamType streamType, Map<String, String> streamAttributes,
+			Map<String, String> streamMetadata) {
 		if (streams.containsKey(streamType)) {
 			return this;
 		}
-		
 		Stream stream = new Stream(streamType, streamAttributes);
+		stream.addMetadata(streamMetadata);
 		this.streams.put(streamType, stream);
 		return this;
 	}
@@ -82,19 +84,24 @@ public abstract class MediaContainer implements Container {
 	 */
 	@Override
 	public Map<String, String> getMetaData() {
-		//return this.containerAttributes.get("duration");
-		return null;
+		return this.metadata;
 	}
 	
 	/**
 	 * @param containerAttributes the containerAttributes to set
 	 */
-	public void addContainerAttributes(Map<String, String> containerAttributes) {
+	public MediaContainer addContainerAttributes(Map<String, String> containerAttributes) {
 		this.containerAttributes = containerAttributes;
+		return this;
+	}
+
+	public void addMetadata(Map<String, String> metadata) {
+		this.metadata = metadata;
 	}
 
 	public String toString() {
-		return this.getMediaType() + "::" + this.containerAttributes + "\n stream data ::\n" + streams; 
+		return this.getMediaType() + "::" + this.containerAttributes + "::\nContainer Metadata::" + this.metadata 
+				+ "\n stream data ::\n" + streams; 
 	}
 
 }

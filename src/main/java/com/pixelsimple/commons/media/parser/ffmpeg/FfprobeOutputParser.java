@@ -5,6 +5,7 @@ package com.pixelsimple.commons.media.parser.ffmpeg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ import com.pixelsimple.commons.media.Photo;
 import com.pixelsimple.commons.media.Video;
 import com.pixelsimple.commons.media.exception.MediaException;
 import com.pixelsimple.commons.media.parser.Parser;
-import com.pixelsimple.commons.util.CommonsUtil;
+import com.pixelsimple.commons.util.CommonsUtils;
 
 /**
  *
@@ -36,6 +37,7 @@ public class FfprobeOutputParser implements Parser {
 	private static final String FFPROBE_OUTPUT_FORMAT_END_TAG = "[/FORMAT]";
 	private static final String FFPROBE_OUTPUT_STREAM_START_REGEX_PATTERN = "\\[STREAM\\]";
 	private static final String FFPROBE_OUTPUT_STREAM_END_REGEX_PATTERN = "\\[\\/STREAM\\]";
+	private static final String FFPROBE_OUTPUT_METADATA_START_TAG = "TAG:";
 	
 	/* (non-Javadoc)
 	 * @see com.pixelsimple.commons.media.parser.Parser#parseMediaInfo(com.pixelsimple.commons.command.CommandResponse)
@@ -79,24 +81,33 @@ public class FfprobeOutputParser implements Parser {
 	}
 
 	private MediaContainer createContainerWithDetails(String formatContent, String[] streamContents) {
-		Map<String , String> containerAttributesFormatAttributes = CommonsUtil.convertMultiLineDelimitedStringsToMap(
-				formatContent, "=");
 		List<Map<String, String>> streamsAttributes = new ArrayList<Map<String,String>>();
+		List<Map<String, String>> streamsMetadatas = new ArrayList<Map<String,String>>();
 		
 		for (String streamContent : streamContents) {
-			 Map<String, String> streamAttributes = CommonsUtil.convertMultiLineDelimitedStringsToMap(streamContent, "=");
+			Map<String, String> streamAttributes = new HashMap<String, String>();
+			Map<String , String> streamMetadata = new HashMap<String, String>();
+			this.populateAttributesAndMetadata(streamContent, streamAttributes, streamMetadata);
 			streamsAttributes.add(streamAttributes);
+			streamsMetadatas.add(streamMetadata);
 		}
 		MediaContainer container = this.createContainer(streamsAttributes);
-		container.addContainerAttributes(containerAttributesFormatAttributes);
+
+		Map<String , String> containerFormatAttributes = new HashMap<String, String>();
+		Map<String , String> containerFormatMetadata = new HashMap<String, String>();
+		this.populateAttributesAndMetadata(formatContent, containerFormatAttributes, containerFormatMetadata);
+		container.addContainerAttributes(containerFormatAttributes).addMetadata(containerFormatMetadata);
 		
-		for (Map<String, String> streamsAttribute : streamsAttributes) {
+		for (int i = 0; i < streamsAttributes.size(); i++) {
+			Map<String, String> streamsAttribute = streamsAttributes.get(i);
+			Map<String, String> streamsMetadata = streamsMetadatas.get(i);
+			
 			// Can use audio or video codec_type here, as both are same.
 			String type = streamsAttribute.get(Container.CONTAINER_AUDIO_STREAM_ATTRIBUTES.codec_type.name());
 			LOG.debug("createContainerWithDetails::type::{}", type);
 
 			StreamType streamType = Container.StreamType.valueOf(type.toUpperCase());
-			container.addStreams(streamType, streamsAttribute);
+			container.addStreams(streamType, streamsAttribute, streamsMetadata);
 		}
 		LOG.debug("createContainerWithDetails::container::{}", container);
 		
@@ -126,4 +137,36 @@ public class FfprobeOutputParser implements Parser {
 		return container;
 	}
 	
+	/**
+	 * Convert an input of type: 
+	 * 	key1DELIMvalue1
+	 *  key2DELIMvalue2
+	 *  ..
+	 *  
+	 *  into a map with keys as key1, key2 ... and values as value1, value2 ...
+	 * 
+	 * @param keyValueStrings
+	 * @return
+	 */
+	private void populateAttributesAndMetadata(String keyValueStrings, 
+			Map<String, String> attributes, Map<String, String> metadata) {
+		String [] keyValueLine = keyValueStrings.split(CommonsUtils.NEW_LINE_CHARACTER);
+		
+		for (String keyValue : keyValueLine) {
+			int equalIndex = keyValue.indexOf("=");
+			
+			if (equalIndex != -1) {
+				String key = keyValue.substring(0, equalIndex);
+				String value = keyValue.substring(equalIndex + 1);
+				
+				if (key.startsWith(FFPROBE_OUTPUT_METADATA_START_TAG)) {
+					key = key.substring(FFPROBE_OUTPUT_METADATA_START_TAG.length());
+					metadata.put(key, value);
+				} else {
+					attributes.put(key, value);
+				}
+			}
+		}
+		LOG.debug("convertMultiLineDelimitedStringsToMap::attributes::{}::\n metadata::{}", attributes, metadata);
+	}
 }
