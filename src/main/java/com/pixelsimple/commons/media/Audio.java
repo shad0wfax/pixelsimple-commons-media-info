@@ -3,7 +3,6 @@
  */
 package com.pixelsimple.commons.media;
 
-import java.util.Map;
 
 /**
  *

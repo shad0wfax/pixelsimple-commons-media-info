@@ -1,7 +1,7 @@
 /**
  * © PixelSimple 2011-2012.
  */
-package com.pixelsimple.commons.media.parser.ffmpeg;
+package com.pixelsimple.commons.media.parser.ffprobe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +12,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pixelsimple.commons.command.CommandRequest;
 import com.pixelsimple.commons.command.CommandResponse;
 import com.pixelsimple.commons.media.Audio;
 import com.pixelsimple.commons.media.Container;
@@ -43,16 +44,8 @@ public class FfprobeOutputParser implements Parser {
 	 * @see com.pixelsimple.commons.media.parser.Parser#parseMediaInfo(com.pixelsimple.commons.command.CommandResponse)
 	 */
 	@Override
-	public Container parseMediaInfo(CommandResponse commandResponse) {
+	public Container parseMediaInspectedData(CommandRequest commandRequest, CommandResponse commandResponse) {
 		return this.createMediaContainer(commandResponse);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.pixelsimple.commons.media.parser.Parser#parseTranscodingInfo(com.pixelsimple.commons.command.CommandResponse)
-	 */
-	@Override
-	public Container parseTranscodingInfo(CommandResponse commandResponse) {
-		throw new MediaException("FFprobe does not support transcoding. Use ffmpeg instead. Use FFmpegOutputParser.");
 	}
 
 	private Container createMediaContainer(CommandResponse commandResponse) {

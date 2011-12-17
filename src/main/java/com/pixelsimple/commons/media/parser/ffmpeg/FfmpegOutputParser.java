@@ -8,12 +8,15 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pixelsimple.commons.command.CommandRequest;
 import com.pixelsimple.commons.command.CommandResponse;
 import com.pixelsimple.commons.media.Container;
 import com.pixelsimple.commons.media.parser.Parser;
 
 /**
- *
+ * A ffmpeg take on the parsing output. Incomplete due to the difficulties getting all regexes working all the time.
+ * Instead used ffprobe. Hence deprecated. 
+ * @deprecated
  * @author Akshay Sharma
  * Dec 10, 2011
  */
@@ -41,20 +44,11 @@ public class FfmpegOutputParser implements Parser {
 	 * @see com.pixelsimple.commons.media.parser.Parser#parseMediaInfo(com.pixelsimple.commons.command.CommandResponse)
 	 */
 	@Override
-	public Container parseMediaInfo(CommandResponse commandResponse) {
+	public Container parseMediaInspectedData(CommandRequest commandRequest, CommandResponse commandResponse) {
 		return null;
 //		return this.createMediaContainer(commandResponse);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.pixelsimple.commons.media.parser.Parser#parseTranscodingInfo(com.pixelsimple.commons.command.CommandResponse)
-	 */
-	@Override
-	public Container parseTranscodingInfo(CommandResponse commandResponse) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 //	private Container createMediaContainer(CommandResponse commandResponse) {
 //		String output = commandResponse.getSuccessResponseOutputStream().toString();
 //		MediaContainer container = this.createContainerType(output); 
