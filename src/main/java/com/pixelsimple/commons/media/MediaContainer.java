@@ -87,6 +87,17 @@ public abstract class MediaContainer implements Container {
 		return this.metadata;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.pixelsimple.commons.media.Container#getContainerAttribute(com.pixelsimple.commons.media.Container.CONTAINER_FORMAT_ATTRIBUTES)
+	 */
+	@Override
+	public String getContainerAttribute(CONTAINER_FORMAT_ATTRIBUTES attribute) {
+		if (attribute == null) {
+			return null;
+		}
+		return this.containerAttributes.get(attribute.name());
+	}
+
 	/**
 	 * @param containerAttributes the containerAttributes to set
 	 */

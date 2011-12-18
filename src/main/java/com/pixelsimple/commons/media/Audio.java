@@ -18,4 +18,5 @@ public class Audio extends MediaContainer {
 	public MediaType getMediaType() {
 		return Container.MediaType.AUDIO;
 	}
+
 }

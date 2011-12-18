@@ -19,6 +19,7 @@ import com.pixelsimple.commons.media.Container;
 import com.pixelsimple.commons.media.Container.StreamType;
 import com.pixelsimple.commons.media.MediaContainer;
 import com.pixelsimple.commons.media.Photo;
+import com.pixelsimple.commons.media.Stream;
 import com.pixelsimple.commons.media.Video;
 import com.pixelsimple.commons.media.exception.MediaException;
 import com.pixelsimple.commons.media.parser.Parser;
@@ -96,7 +97,7 @@ public class FfprobeOutputParser implements Parser {
 			Map<String, String> streamsMetadata = streamsMetadatas.get(i);
 			
 			// Can use audio or video codec_type here, as both are same.
-			String type = streamsAttribute.get(Container.CONTAINER_AUDIO_STREAM_ATTRIBUTES.codec_type.name());
+			String type = streamsAttribute.get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
 			LOG.debug("createContainerWithDetails::type::{}", type);
 
 			StreamType streamType = Container.StreamType.valueOf(type.toUpperCase());
@@ -113,7 +114,7 @@ public class FfprobeOutputParser implements Parser {
 		if (streamsAttributes.size() == 2) {
 			container = new Video();
 		} else if (streamsAttributes.size() == 1) {
-			String codecType = streamsAttributes.get(0).get(Container.CONTAINER_AUDIO_STREAM_ATTRIBUTES.codec_type.name());
+			String codecType = streamsAttributes.get(0).get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
 			
 			if (codecType.equalsIgnoreCase("audio")) {
 				container = new Audio();
