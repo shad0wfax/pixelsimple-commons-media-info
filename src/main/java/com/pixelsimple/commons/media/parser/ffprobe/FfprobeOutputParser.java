@@ -23,7 +23,7 @@ import com.pixelsimple.commons.media.Stream;
 import com.pixelsimple.commons.media.Video;
 import com.pixelsimple.commons.media.exception.MediaException;
 import com.pixelsimple.commons.media.parser.Parser;
-import com.pixelsimple.commons.util.CommonsUtils;
+import com.pixelsimple.commons.util.OSUtils;
 
 /**
  *
@@ -144,7 +144,7 @@ public class FfprobeOutputParser implements Parser {
 	 */
 	private void populateAttributesAndMetadata(String keyValueStrings, 
 			Map<String, String> attributes, Map<String, String> metadata) {
-		String [] keyValueLine = keyValueStrings.split(CommonsUtils.NEW_LINE_CHARACTER);
+		String [] keyValueLine = keyValueStrings.split(OSUtils.NEW_LINE_CHARACTER);
 		
 		for (String keyValue : keyValueLine) {
 			int equalIndex = keyValue.indexOf("=");
