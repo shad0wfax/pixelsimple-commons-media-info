@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Akshay Sharma
  * Dec 16, 2011
  */
-public class Stream {
+public final class Stream {
 	// A type for enums to generalize
 	public static interface ENUM_STREAM_ATTRIBUTES {		
 	}

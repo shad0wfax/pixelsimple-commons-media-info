@@ -14,7 +14,7 @@ import com.pixelsimple.commons.media.probe.MediaProbe;
  * @author Akshay Sharma
  * Dec 17, 2011
  */
-public class FfprobeMediaProber implements MediaProbe {
+public final class FfprobeMediaProber implements MediaProbe {
 	private static final Logger LOG = LoggerFactory.getLogger(FfprobeMediaProber.class);
 
 	/* (non-Javadoc)

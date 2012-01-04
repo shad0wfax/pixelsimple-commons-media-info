@@ -30,7 +30,7 @@ import com.pixelsimple.commons.util.OSUtils;
  * @author Akshay Sharma
  * Dec 14, 2011
  */
-public class FfprobeOutputParser implements Parser {
+public final class FfprobeOutputParser implements Parser {
 	static final Logger LOG = LoggerFactory.getLogger(FfprobeOutputParser.class);
 	
 	private static final String FFPROBE_OUTPUT_STREAM_START_TAG = "[STREAM]";

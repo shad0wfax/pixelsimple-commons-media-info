@@ -24,7 +24,7 @@ import com.pixelsimple.commons.media.probe.MediaProbeFactory;
  * @author Akshay Sharma
  * Dec 10, 2011
  */
-public class MediaInspector {
+public final class MediaInspector {
 	private static final Logger LOG = LoggerFactory.getLogger(MediaInspector.class);
 	
 	private MediaInspector() {}

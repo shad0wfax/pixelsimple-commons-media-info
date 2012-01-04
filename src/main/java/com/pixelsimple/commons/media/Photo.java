@@ -9,7 +9,7 @@ package com.pixelsimple.commons.media;
  * @author Akshay Sharma
  * Dec 10, 2011
  */
-public class Photo extends MediaContainer {
+public final class Photo extends MediaContainer {
 
 	/* (non-Javadoc)
 	 * @see com.pixelsimple.commons.media.Container#getMediaType()
