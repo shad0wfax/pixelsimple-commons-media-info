@@ -27,9 +27,9 @@ import com.pixelsimple.commons.media.probe.MediaProbeFactory;
 public final class MediaInspector {
 	private static final Logger LOG = LoggerFactory.getLogger(MediaInspector.class);
 	
-	private MediaInspector() {}
+	public MediaInspector() {}
 	
-	public static void readContainerInfo(String filePathWithFileName) {
+	public void readContainerInfo(String filePathWithFileName) {
 		MediaProbe probe = MediaProbeFactory.createMediaProbe();
 		CommandRequest commandRequest = probe.buildMediaProbeCommand(filePathWithFileName);
 		
