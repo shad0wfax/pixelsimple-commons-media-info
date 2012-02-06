@@ -3,6 +3,8 @@
  */
 package com.pixelsimple.commons.media;
 
+import com.pixelsimple.appcore.media.MediaType;
+
 
 /**
  *
@@ -16,7 +18,7 @@ public final class Photo extends MediaContainer {
 	 */
 	@Override
 	public MediaType getMediaType() {
-		return Container.MediaType.PHOTO;
+		return MediaType.PHOTO;
 	}
 
 }

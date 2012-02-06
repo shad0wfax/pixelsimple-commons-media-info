@@ -6,6 +6,8 @@ package com.pixelsimple.commons.media;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pixelsimple.appcore.media.StreamType;
+
 /**
  *
  * @author Akshay Sharma
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 public abstract class MediaContainer implements Container {
 	
-	private Map<Container.StreamType, Stream> streams = new HashMap<Container.StreamType, Stream>(4);
+	private Map<StreamType, Stream> streams = new HashMap<StreamType, Stream>(4);
 	private Map<String, String> containerAttributes;
 	private Map<String, String> metadata;
 	
@@ -25,7 +27,7 @@ public abstract class MediaContainer implements Container {
 	}
 
 	
-	public Container addStreams(Container.StreamType streamType, Map<String, String> streamAttributes,
+	public Container addStreams(StreamType streamType, Map<String, String> streamAttributes,
 			Map<String, String> streamMetadata) {
 		if (streams.containsKey(streamType)) {
 			return this;
@@ -40,7 +42,7 @@ public abstract class MediaContainer implements Container {
 	 * @see com.pixelsimple.commons.media.Container#getStreams()
 	 */
 	@Override
-	public Map<Container.StreamType, Stream> getStreams() {
+	public Map<StreamType, Stream> getStreams() {
 		return this.streams;
 	}
 
@@ -98,6 +100,22 @@ public abstract class MediaContainer implements Container {
 		return this.containerAttributes.get(attribute.name());
 	}
 
+	/* (non-Javadoc)
+	 * @see com.pixelsimple.commons.media.Container#getFilePathWithName()
+	 */
+	@Override
+	public String getFilePathWithName() {
+		return this.containerAttributes.get(Container.CONTAINER_FORMAT_ATTRIBUTES.filename.name());	
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pixelsimple.commons.media.Container#getContainerFormat()
+	 */
+	@Override
+	public String getContainerFormat() {
+		return this.containerAttributes.get(Container.CONTAINER_FORMAT_ATTRIBUTES.format_name.name());
+	}
+	
 	/**
 	 * @param containerAttributes the containerAttributes to set
 	 */

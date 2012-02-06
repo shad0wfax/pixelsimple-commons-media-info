@@ -5,6 +5,9 @@ package com.pixelsimple.commons.media;
 
 import java.util.Map;
 
+import com.pixelsimple.appcore.media.MediaType;
+import com.pixelsimple.appcore.media.StreamType;
+
 /**
  * TODO: Figure out the return types etc eventually 
  * 
@@ -13,15 +16,12 @@ import java.util.Map;
  */
 public interface Container {
 	
-	public static enum MediaType {VIDEO, AUDIO, PHOTO};
-	public static enum StreamType {VIDEO, AUDIO};
-	
 	// These container attributes are based off of FFProbe. Ensure other libraries used to inspect media data adheres to these attribute names.
 	public static enum CONTAINER_FORMAT_ATTRIBUTES {filename, nb_streams, format_name, format_long_name, start_time, duration, size, bit_rate, metadata};
 	
 	MediaType getMediaType();
 	
-	Map<Container.StreamType, Stream> getStreams();
+	Map<StreamType, Stream> getStreams();
 	
 	int getStreamCount();
 	
@@ -30,6 +30,10 @@ public interface Container {
 	String getDuration();
 
 	String getFileSize();
+
+	String getFilePathWithName();
+
+	String getContainerFormat();
 
 	Map<String, String> getMetaData();
 	

@@ -5,6 +5,8 @@ package com.pixelsimple.commons.media;
 
 import java.util.Map;
 
+import com.pixelsimple.appcore.media.StreamType;
+
 /**
  * 
  *
@@ -22,18 +24,18 @@ public final class Stream {
 		duration, nb_frames, metadata};
 	
 	private Map<String, String> streamAttributes;
-	private Container.StreamType streamType;
+	private StreamType streamType;
 	private Map<String, String> metadata;
 	
 	
 	/**
 	 * @return the streamType
 	 */
-	public Container.StreamType getStreamType() {
+	public StreamType getStreamType() {
 		return this.streamType;
 	}
 
-	public Stream(Container.StreamType streamType, Map<String, String> streamAttributes) {
+	public Stream(StreamType streamType, Map<String, String> streamAttributes) {
 		this.streamType = streamType;
 		this.streamAttributes = streamAttributes;
 	}

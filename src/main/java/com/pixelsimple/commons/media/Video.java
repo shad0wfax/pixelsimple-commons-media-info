@@ -3,6 +3,8 @@
  */
 package com.pixelsimple.commons.media;
 
+import com.pixelsimple.appcore.media.MediaType;
+
 
 
 /**
@@ -17,7 +19,7 @@ public final class Video extends MediaContainer {
 	 */
 	@Override
 	public MediaType getMediaType() {
-		return Container.MediaType.VIDEO;
+		return MediaType.VIDEO;
 	}
 
 }

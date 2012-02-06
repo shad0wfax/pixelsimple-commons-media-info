@@ -12,11 +12,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pixelsimple.appcore.media.StreamType;
 import com.pixelsimple.commons.command.CommandRequest;
 import com.pixelsimple.commons.command.CommandResponse;
 import com.pixelsimple.commons.media.Audio;
 import com.pixelsimple.commons.media.Container;
-import com.pixelsimple.commons.media.Container.StreamType;
 import com.pixelsimple.commons.media.MediaContainer;
 import com.pixelsimple.commons.media.Photo;
 import com.pixelsimple.commons.media.Stream;
@@ -100,7 +100,7 @@ public final class FfprobeOutputParser implements Parser {
 			String type = streamsAttribute.get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
 			LOG.debug("createContainerWithDetails::type::{}", type);
 
-			StreamType streamType = Container.StreamType.valueOf(type.toUpperCase());
+			StreamType streamType = StreamType.valueOf(type.toUpperCase());
 			container.addStreams(streamType, streamsAttribute, streamsMetadata);
 		}
 		LOG.debug("createContainerWithDetails::container::{}", container);
