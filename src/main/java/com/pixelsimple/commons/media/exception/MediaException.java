@@ -8,7 +8,7 @@ package com.pixelsimple.commons.media.exception;
  * @author Akshay Sharma
  * Dec 16, 2011
  */
-public class MediaException extends RuntimeException {
+public class MediaException extends Exception {
 
 	/**
 	 * 

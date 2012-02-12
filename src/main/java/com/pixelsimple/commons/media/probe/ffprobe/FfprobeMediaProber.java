@@ -27,10 +27,14 @@ public final class FfprobeMediaProber implements MediaProbe {
 		ApiConfig apiConfig = RegistryService.getRegisteredApiConfig();
 		String ffprobePath = apiConfig.getFfprobeConfig().getExecutablePath();
 		
-		String command = ffprobePath + " -i " + filePathWithFileName + " -show_format -show_streams -sexagesimal ";
+//		String command = ffprobePath + " -i " + filePathWithFileName + " -show_format -show_streams -sexagesimal ";
+		CommandRequest request = new CommandRequest();
+		request.addCommand(ffprobePath, 0);
+		request.addArguments("-i").addArguments(filePathWithFileName).addArguments("-show_format")
+			.addArguments("-show_streams").addArguments("-sexagesimal");
 		
-		LOG.debug("buildMediaProbeCommand::built command::{}", command);
-		return new CommandRequest().addCommand(command, 0);
+		LOG.debug("buildMediaProbeCommand::built command::{}", request.getCommandAsString());
+		return request;
 	}
 
 }

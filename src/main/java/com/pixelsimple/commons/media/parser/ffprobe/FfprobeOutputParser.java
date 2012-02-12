@@ -45,11 +45,12 @@ public final class FfprobeOutputParser implements Parser {
 	 * @see com.pixelsimple.commons.media.parser.Parser#parseMediaInfo(com.pixelsimple.commons.command.CommandResponse)
 	 */
 	@Override
-	public Container parseMediaInspectedData(CommandRequest commandRequest, CommandResponse commandResponse) {
+	public Container parseMediaInspectedData(CommandRequest commandRequest, CommandResponse commandResponse)
+			throws MediaException {
 		return this.createMediaContainer(commandResponse);
 	}
 
-	private Container createMediaContainer(CommandResponse commandResponse) {
+	private Container createMediaContainer(CommandResponse commandResponse) throws MediaException {
 		String output = commandResponse.getSuccessResponseOutputStream().toString();
 		
 		if (output == null || output.length() < 1 || (!output.contains(FFPROBE_OUTPUT_FORMAT_START_TAG)) 
@@ -74,7 +75,7 @@ public final class FfprobeOutputParser implements Parser {
 		return this.createContainerWithDetails(formatContent, streamContents); 
 	}
 
-	private MediaContainer createContainerWithDetails(String formatContent, String[] streamContents) {
+	private MediaContainer createContainerWithDetails(String formatContent, String[] streamContents) throws MediaException {
 		List<Map<String, String>> streamsAttributes = new ArrayList<Map<String,String>>();
 		List<Map<String, String>> streamsMetadatas = new ArrayList<Map<String,String>>();
 		
@@ -108,7 +109,7 @@ public final class FfprobeOutputParser implements Parser {
 		return container;
 	}
 
-	private MediaContainer createContainer(List<Map<String, String>> streamsAttributes) {
+	private MediaContainer createContainer(List<Map<String, String>> streamsAttributes) throws MediaException {
 		MediaContainer container = null;
 		// TODO: Junk logic maybe. Proof check and see how best to make this better.
 		if (streamsAttributes.size() == 2) {
