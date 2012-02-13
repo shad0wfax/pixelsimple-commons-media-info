@@ -111,19 +111,47 @@ public final class FfprobeOutputParser implements Parser {
 
 	private MediaContainer createContainer(List<Map<String, String>> streamsAttributes) throws MediaException {
 		MediaContainer container = null;
-		// TODO: Junk logic maybe. Proof check and see how best to make this better.
-		if (streamsAttributes.size() == 2) {
-			container = new Video();
-		} else if (streamsAttributes.size() == 1) {
-			String codecType = streamsAttributes.get(0).get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
+		boolean isVideoStream = false;
+		boolean isAudioStream = false;
+		
+		for (Map<String, String> stream : streamsAttributes) {
+			// Can use audio or video codec_type here, as both are same.
+			String type = stream.get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
 			
-			if (codecType.equalsIgnoreCase("audio")) {
-				container = new Audio();
-			} else {
-				// TODO: Is it photo or video without audio? Need better algo for sure
-				container = new Photo();
+			if ("video".equalsIgnoreCase(type)) {
+				isVideoStream = true;
 			}
+			
+			if ("audio".equalsIgnoreCase(type)) {
+				isAudioStream = true;
+			}
+			// TODO: add other streams supported
 		}
+		
+		if (isVideoStream) {
+			container = new Video();
+		} else if (isAudioStream && !isVideoStream) {
+			container = new Audio();
+		} else if (!isVideoStream && !isAudioStream) {
+			// TODO: Is it photo or video without video stream!? Need better algo for sure
+			container = new Photo();
+		}
+
+		// Old Algo: 
+//		// TODO: Junk logic maybe. Proof check and see how best to make this better.
+//		if (streamsAttributes.size() == 2) {
+//			container = new Video();
+//		} else if (streamsAttributes.size() == 1) {
+//			String codecType = streamsAttributes.get(0).get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
+//			
+//			if (codecType.equalsIgnoreCase("audio")) {
+//				container = new Audio();
+//			} else {
+//				// TODO: Is it photo or video without audio? Need better algo for sure
+//				container = new Photo();
+//			}
+//		}
+		
 		if (container == null) {
 			throw new MediaException("Could not create a container. No streamContent was found in ::" + streamsAttributes);
 		}
