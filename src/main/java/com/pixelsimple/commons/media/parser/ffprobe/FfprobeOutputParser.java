@@ -101,8 +101,13 @@ public final class FfprobeOutputParser implements Parser {
 			String type = streamsAttribute.get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
 			LOG.debug("createContainerWithDetails::type::{}", type);
 
-			StreamType streamType = StreamType.valueOf(type.toUpperCase());
-			container.addStreams(streamType, streamsAttribute, streamsMetadata);
+			try {
+				StreamType streamType = StreamType.valueOf(type.toUpperCase());
+				container.addStreams(streamType, streamsAttribute, streamsMetadata);
+			} catch (Exception e) {
+				// In case a stream type is not in the listed StreamType class, an exception is thrown. We will ignore it.
+				LOG.error("createContainerWithDetails:: Found an unknown stream. Ignoring it{}", e);			
+			}
 		}
 		LOG.debug("createContainerWithDetails::container::{}", container);
 		
