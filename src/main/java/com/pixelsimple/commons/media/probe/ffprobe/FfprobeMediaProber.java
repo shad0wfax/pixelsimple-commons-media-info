@@ -34,8 +34,8 @@ public final class FfprobeMediaProber implements MediaProbe {
 		// Commented out since ffprobe on mac with the current version is not supporting  -i flag. Uncomment when Mac supports.
 //		request.addArguments("-i");
 		
-		request.addArguments(filePathWithFileName).addArguments("-show_format")
-			.addArguments("-show_streams").addArguments("-sexagesimal");
+		request.addArgument(filePathWithFileName).addArgument("-show_format")
+			.addArgument("-show_streams").addArgument("-sexagesimal");
 		
 		LOG.debug("buildMediaProbeCommand::built command::{}", request.getCommandAsString());
 		return request;
