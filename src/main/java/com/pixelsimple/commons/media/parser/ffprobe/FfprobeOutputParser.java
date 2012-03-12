@@ -78,6 +78,9 @@ public final class FfprobeOutputParser implements Parser {
 	private MediaContainer createContainerWithDetails(String formatContent, String[] streamContents) throws MediaException {
 		List<Map<String, String>> streamsAttributes = new ArrayList<Map<String,String>>();
 		List<Map<String, String>> streamsMetadatas = new ArrayList<Map<String,String>>();
+		Map<String , String> containerFormatAttributes = new HashMap<String, String>();
+		Map<String , String> containerFormatMetadata = new HashMap<String, String>();
+		this.populateAttributesAndMetadata(formatContent, containerFormatAttributes, containerFormatMetadata);
 		
 		for (String streamContent : streamContents) {
 			Map<String, String> streamAttributes = new HashMap<String, String>();
@@ -86,11 +89,8 @@ public final class FfprobeOutputParser implements Parser {
 			streamsAttributes.add(streamAttributes);
 			streamsMetadatas.add(streamMetadata);
 		}
-		MediaContainer container = this.createContainer(streamsAttributes);
+		MediaContainer container = this.createContainer(streamsAttributes, containerFormatAttributes);
 
-		Map<String , String> containerFormatAttributes = new HashMap<String, String>();
-		Map<String , String> containerFormatMetadata = new HashMap<String, String>();
-		this.populateAttributesAndMetadata(formatContent, containerFormatAttributes, containerFormatMetadata);
 		container.addContainerAttributes(containerFormatAttributes).addMetadata(containerFormatMetadata);
 		
 		for (int i = 0; i < streamsAttributes.size(); i++) {
@@ -114,16 +114,23 @@ public final class FfprobeOutputParser implements Parser {
 		return container;
 	}
 
-	private MediaContainer createContainer(List<Map<String, String>> streamsAttributes) throws MediaException {
+	private MediaContainer createContainer(List<Map<String, String>> streamsAttributes, Map<String , String> containerFormatAttributes) throws MediaException {
 		MediaContainer container = null;
 		boolean isVideoStream = false;
 		boolean isAudioStream = false;
+		String formatName = containerFormatAttributes.get(Container.CONTAINER_FORMAT_ATTRIBUTES.format_name.name());
+
+		LOG.debug("createContainer::formatName::{}", formatName);
+		
+		if (formatName == null)
+			formatName = "";
 		
 		for (Map<String, String> stream : streamsAttributes) {
 			// Can use audio or video codec_type here, as both are same.
 			String type = stream.get(Stream.AUDIO_STREAM_ATTRIBUTES.codec_type.name());
 			
-			if ("video".equalsIgnoreCase(type)) {
+			// It appears that container format contains video as codec_type but format name starts with image (ex: image2).			
+			if ("video".equalsIgnoreCase(type) && !formatName.startsWith("image")) {
 				isVideoStream = true;
 			}
 			
