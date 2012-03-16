@@ -116,6 +116,26 @@ public abstract class MediaContainer implements Container {
 		return this.containerAttributes.get(Container.CONTAINER_FORMAT_ATTRIBUTES.format_name.name());
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.pixelsimple.commons.media.Container#getFormatFromFileExtension()
+	 */
+	@Override
+	public String getFormatFromFileExtension() {
+		String fileName = this.getFilePathWithName();
+		int index = fileName.indexOf(".");
+		
+		// A weak logic - look for a dot in the filename, if its there assume its extension. 
+		// Remember the file could be a url (http/ aws etc), which might not contain the '.' or might even but wrong one.
+		// TODO: deal with file protocols :).
+		if (index == -1) 
+			return null;
+		
+		int length = fileName.length();
+		index = (index < length) ? index + 1 : index;
+		
+		return fileName.substring(index, length);
+	}
+
 	/**
 	 * @param containerAttributes the containerAttributes to set
 	 */

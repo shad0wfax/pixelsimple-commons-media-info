@@ -34,6 +34,8 @@ public interface Container {
 	String getFilePathWithName();
 
 	String getContainerFormat();
+	
+	String getFormatFromFileExtension();
 
 	Map<String, String> getMetaData();
 	

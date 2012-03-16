@@ -44,6 +44,7 @@ public class MediaInspectorTest {
 				Container container = inspector.createMediaContainer(mediaPath);
 				
 				Assert.assertEquals(container.getMediaType(), MediaType.VIDEO);
+				Assert.assertEquals(container.getFormatFromFileExtension(), "mov");
 			} catch (MediaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -70,6 +71,7 @@ public class MediaInspectorTest {
 				Container container = inspector.createMediaContainer(mediaPath);
 				
 				Assert.assertEquals(container.getMediaType(), MediaType.VIDEO);
+				Assert.assertEquals(container.getFormatFromFileExtension(), "mov");
 			} catch (MediaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
