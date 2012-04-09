@@ -27,14 +27,10 @@ public final class FfprobeMediaProber implements MediaProbe {
 		ApiConfig apiConfig = RegistryService.getRegisteredApiConfig();
 		String ffprobePath = apiConfig.getFfprobeConfig().getExecutablePath();
 		
-//		String command = ffprobePath + " -i " + filePathWithFileName + " -show_format -show_streams -sexagesimal ";
 		CommandRequest request = new CommandRequest();
 		request.addCommand(ffprobePath, 0);
 		
-		// Commented out since ffprobe on mac with the current version is not supporting  -i flag. Uncomment when Mac supports.
-//		request.addArguments("-i");
-		
-		request.addArgument(filePathWithFileName).addArgument("-show_format")
+		request.addArgument("-i").addArgument(filePathWithFileName).addArgument("-show_format")
 			.addArgument("-show_streams").addArgument("-sexagesimal");
 		
 		LOG.debug("buildMediaProbeCommand::built command::{}", request.getCommandAsString());
