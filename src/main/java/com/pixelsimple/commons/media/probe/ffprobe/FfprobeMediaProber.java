@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pixelsimple.appcore.ApiConfig;
-import com.pixelsimple.appcore.RegistryService;
+import com.pixelsimple.appcore.registry.RegistryService;
 import com.pixelsimple.commons.command.CommandRequest;
 import com.pixelsimple.commons.media.probe.MediaProbe;
 
