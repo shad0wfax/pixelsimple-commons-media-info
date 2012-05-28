@@ -24,8 +24,6 @@ import com.pixelsimple.commons.test.util.TestUtil;
 public class MediaInspectorTest {
 	private static final Logger LOG = LoggerFactory.getLogger(MediaInspectorTest.class);
 
-	private static final String TEST_ARTIFACT_DIR_CONFIG = TestUtil.getTestConfig().get(TestUtil.TEST_ARTIFACT_DIR_CONFIG);
-
 	@Before
 	public void setUp() throws Exception {
 		TestAppInitializer.bootStrapRegistryForTesting();
@@ -36,7 +34,7 @@ public class MediaInspectorTest {
 	 */
 	@Test
 	public void inspectValidMediaContainer() {
-		String mediaPath = TEST_ARTIFACT_DIR_CONFIG + "video1.mov";
+		String mediaPath = TestAppInitializer.TEST_ARTIFACT_DIR + "video1.mov";
 		
 		if (TestUtil.fileExists(mediaPath)) {
 			MediaInspector inspector = new MediaInspector();
