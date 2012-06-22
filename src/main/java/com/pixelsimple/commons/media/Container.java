@@ -5,6 +5,7 @@ package com.pixelsimple.commons.media;
 
 import java.util.Map;
 
+import com.pixelsimple.appcore.Resource;
 import com.pixelsimple.appcore.media.MediaType;
 import com.pixelsimple.appcore.media.StreamType;
 
@@ -31,7 +32,7 @@ public interface Container {
 
 	String getFileSize();
 
-	String getFilePathWithName();
+	Resource getMediaResource();
 
 	String getContainerFormat();
 	

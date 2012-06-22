@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pixelsimple.appcore.Resource;
 import com.pixelsimple.appcore.media.StreamType;
 import com.pixelsimple.commons.command.CommandRequest;
 import com.pixelsimple.commons.command.CommandResponse;
@@ -35,8 +36,8 @@ public final class MediaInspector {
 	
 	public MediaInspector() {}
 	
-	public Container createMediaContainer(String filePathWithFileName) throws MediaException {
-		CommandRequest commandRequest = this.getMediaProbe().buildMediaProbeCommand(filePathWithFileName);
+	public Container createMediaContainer(Resource mediaResource) throws MediaException {
+		CommandRequest commandRequest = this.getMediaProbe().buildMediaProbeCommand(mediaResource);
 		CommandResponse commandResponse = new CommandResponse();
 		
 		// Will block and run and fill the response out.
@@ -50,7 +51,7 @@ public final class MediaInspector {
 		}
 		
 		Parser parser = ParserFactory.createParserForCommandRequest(commandRequest);
-		Container container = parser.parseMediaInspectedData(commandRequest, commandResponse);
+		Container container = parser.parseMediaInspectedData(mediaResource, commandRequest, commandResponse);
 
 		if (LOG.isDebugEnabled()) {
 			Map<StreamType, Stream> streams = container.getStreams();

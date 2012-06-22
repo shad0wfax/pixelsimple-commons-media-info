@@ -6,6 +6,7 @@ package com.pixelsimple.commons.media;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pixelsimple.appcore.Resource;
 import com.pixelsimple.appcore.media.StreamType;
 
 /**
@@ -18,12 +19,17 @@ public abstract class MediaContainer implements Container {
 	private Map<StreamType, Stream> streams = new HashMap<StreamType, Stream>(4);
 	private Map<String, String> containerAttributes;
 	private Map<String, String> metadata;
+	private Resource mediaResource;
 	
 	/**
 	 * 
 	 */
-	public MediaContainer() {
-		super();
+	public MediaContainer(Resource mediaResource) {
+		if (mediaResource == null)
+			throw new IllegalArgumentException("Invalid resource being represented as a MediaContainer." +
+				" A valid resource should be encapsulated for representing a MediaContainer");
+		
+		this.mediaResource = mediaResource;
 	}
 
 	
@@ -104,8 +110,8 @@ public abstract class MediaContainer implements Container {
 	 * @see com.pixelsimple.commons.media.Container#getFilePathWithName()
 	 */
 	@Override
-	public String getFilePathWithName() {
-		return this.containerAttributes.get(Container.CONTAINER_FORMAT_ATTRIBUTES.filename.name());	
+	public Resource getMediaResource() {
+		return this.mediaResource;	
 	}
 
 	/* (non-Javadoc)
@@ -121,7 +127,7 @@ public abstract class MediaContainer implements Container {
 	 */
 	@Override
 	public String getFormatFromFileExtension() {
-		String fileName = this.getFilePathWithName();
+		String fileName = this.mediaResource.getResourceAsString();
 		int index = fileName.lastIndexOf(".");
 		
 		// A weak logic - look for a end dot in the filename, if its there assume its extension. 

@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pixelsimple.appcore.Resource;
+import com.pixelsimple.appcore.Resource.RESOURCE_TYPE;
 import com.pixelsimple.appcore.media.MediaType;
 import com.pixelsimple.commons.media.exception.MediaException;
 import com.pixelsimple.commons.test.appcore.init.TestAppInitializer;
@@ -35,14 +37,16 @@ public class MediaInspectorTest {
 	@Test
 	public void inspectValidMediaContainer() {
 		String mediaPath = TestAppInitializer.TEST_ARTIFACT_DIR + "video1.mov";
+		Resource res = new Resource(mediaPath, RESOURCE_TYPE.FILE);
 		
 		if (TestUtil.fileExists(mediaPath)) {
 			MediaInspector inspector = new MediaInspector();
 			try {
-				Container container = inspector.createMediaContainer(mediaPath);
+				Container container = inspector.createMediaContainer(res);
 				
 				Assert.assertEquals(container.getMediaType(), MediaType.VIDEO);
 				Assert.assertEquals(container.getFormatFromFileExtension(), "mov");
+				Assert.assertEquals(container.getMediaResource().getResourceAsString(), res.getResourceAsString());
 			} catch (MediaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -62,11 +66,12 @@ public class MediaInspectorTest {
 	@Test
 	public void inspectValidMediaContainerWithSpace() {
 		String mediaPath = TestUtil.getTestConfig().get(TestUtil.TEST_ARTIFACT_DIR_CONFIG) + "with space in folder name/video1.mov";
+		Resource res = new Resource(mediaPath, RESOURCE_TYPE.FILE);
 		
 		if (TestUtil.fileExists(mediaPath)) {
 			MediaInspector inspector = new MediaInspector();
 			try {
-				Container container = inspector.createMediaContainer(mediaPath);
+				Container container = inspector.createMediaContainer(res);
 				
 				Assert.assertEquals(container.getMediaType(), MediaType.VIDEO);
 				Assert.assertEquals(container.getFormatFromFileExtension(), "mov");

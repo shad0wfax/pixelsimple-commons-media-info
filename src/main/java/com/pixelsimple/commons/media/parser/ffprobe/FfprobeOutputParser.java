@@ -12,6 +12,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pixelsimple.appcore.Resource;
 import com.pixelsimple.appcore.media.StreamType;
 import com.pixelsimple.commons.command.CommandRequest;
 import com.pixelsimple.commons.command.CommandResponse;
@@ -45,12 +46,12 @@ public final class FfprobeOutputParser implements Parser {
 	 * @see com.pixelsimple.commons.media.parser.Parser#parseMediaInfo(com.pixelsimple.commons.command.CommandResponse)
 	 */
 	@Override
-	public Container parseMediaInspectedData(CommandRequest commandRequest, CommandResponse commandResponse)
+	public Container parseMediaInspectedData(Resource mediaResource, CommandRequest commandRequest, CommandResponse commandResponse)
 			throws MediaException {
-		return this.createMediaContainer(commandResponse);
+		return this.createMediaContainer(mediaResource, commandResponse);
 	}
 
-	private Container createMediaContainer(CommandResponse commandResponse) throws MediaException {
+	private Container createMediaContainer(Resource mediaResource, CommandResponse commandResponse) throws MediaException {
 		String output = commandResponse.getSuccessResponseOutputStream().toString();
 		
 		if (output == null || output.length() < 1 || (!output.contains(FFPROBE_OUTPUT_FORMAT_START_TAG)) 
@@ -72,10 +73,11 @@ public final class FfprobeOutputParser implements Parser {
 		
 		LOG.debug("createMediaContainer::streamContent::{}\n{}", streamContents.length, Arrays.toString(streamContents));
 		
-		return this.createContainerWithDetails(formatContent, streamContents); 
+		return this.createContainerWithDetails(mediaResource, formatContent, streamContents); 
 	}
 
-	private MediaContainer createContainerWithDetails(String formatContent, String[] streamContents) throws MediaException {
+	private MediaContainer createContainerWithDetails(Resource mediaResource, String formatContent, 
+			String[] streamContents) throws MediaException {
 		List<Map<String, String>> streamsAttributes = new ArrayList<Map<String,String>>();
 		List<Map<String, String>> streamsMetadatas = new ArrayList<Map<String,String>>();
 		Map<String , String> containerFormatAttributes = new HashMap<String, String>();
@@ -89,7 +91,7 @@ public final class FfprobeOutputParser implements Parser {
 			streamsAttributes.add(streamAttributes);
 			streamsMetadatas.add(streamMetadata);
 		}
-		MediaContainer container = this.createContainer(streamsAttributes, containerFormatAttributes);
+		MediaContainer container = this.createContainer(mediaResource, streamsAttributes, containerFormatAttributes);
 
 		container.addContainerAttributes(containerFormatAttributes).addMetadata(containerFormatMetadata);
 		
@@ -114,7 +116,8 @@ public final class FfprobeOutputParser implements Parser {
 		return container;
 	}
 
-	private MediaContainer createContainer(List<Map<String, String>> streamsAttributes, Map<String , String> containerFormatAttributes) throws MediaException {
+	private MediaContainer createContainer(Resource mediaResource, List<Map<String, String>> streamsAttributes, 
+			Map<String , String> containerFormatAttributes) throws MediaException {
 		MediaContainer container = null;
 		boolean isVideoStream = false;
 		boolean isAudioStream = false;
@@ -141,12 +144,12 @@ public final class FfprobeOutputParser implements Parser {
 		}
 		
 		if (isVideoStream) {
-			container = new Video();
+			container = new Video(mediaResource);
 		} else if (isAudioStream && !isVideoStream) {
-			container = new Audio();
+			container = new Audio(mediaResource);
 		} else if (!isVideoStream && !isAudioStream) {
 			// TODO: Is it photo or video without video stream!? Need better algo for sure
-			container = new Photo();
+			container = new Photo(mediaResource);
 		}
 
 		// Old Algo: 

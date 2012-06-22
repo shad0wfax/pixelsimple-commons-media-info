@@ -3,6 +3,7 @@
  */
 package com.pixelsimple.commons.media.probe;
 
+import com.pixelsimple.appcore.Resource;
 import com.pixelsimple.commons.command.CommandRequest;
 
 /**
@@ -12,6 +13,6 @@ import com.pixelsimple.commons.command.CommandRequest;
  */
 public interface MediaProbe {
 
-	CommandRequest buildMediaProbeCommand(String filePathWithFileName);
+	CommandRequest buildMediaProbeCommand(Resource mediaResource);
 	
 }

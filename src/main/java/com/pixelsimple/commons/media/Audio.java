@@ -3,6 +3,7 @@
  */
 package com.pixelsimple.commons.media;
 
+import com.pixelsimple.appcore.Resource;
 import com.pixelsimple.appcore.media.MediaType;
 
 
@@ -12,6 +13,13 @@ import com.pixelsimple.appcore.media.MediaType;
  * Dec 9, 2011
  */
 public final class Audio extends MediaContainer {
+
+	/**
+	 * @param mediaResource
+	 */
+	public Audio(Resource mediaResource) {
+		super(mediaResource);
+	}
 
 	/* (non-Javadoc)
 	 * @see com.pixelsimple.commons.media.Container#getMediaType()
